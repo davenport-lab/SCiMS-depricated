@@ -19,7 +19,7 @@ setuptools.setup(
     include_package_data = True,
     package_data={
         'scims': ['training_data/training_data.txt'],
-    }
+    },
     entry_points={"console_scripts": ["scims=scims.__main__:main",],},
     description="SCiMS: Sex Calling for Metagenomic Sequences",
     install_requires=["setuptools", "biopython", "pandas", "matplotlib", "scipy", "numpy"],
