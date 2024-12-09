@@ -27,24 +27,27 @@ scims -h
 `SCiMS` can be used on any alignment data, regardless of the platform used for sequencing or the aligner that generated the alignment file. 
 
 ```
-usage: scims [-h] [--i IDXTATS] [--s SCAFFOLD_IDS_FILE] [--X-id X_ID]
-                   [--Y-id Y_ID]
-
-Sex Assignment Script
+usage: scims [-h] [--master_file IDXTATS] [--scaffolds SCAFFOLD_IDS_FILE] [--metadata METADATA_FILE]
+                   [--heterogametic_id X_ID] [--homogametic_id Y_ID] [--system SYSTEM] 
+                   [--output OUTPUT_FILE] [optional --threshold THRESHOLD] [optional --training_data TRAINING_DATA]
 
 options:
-  -h, --help            show this help message and exit
-  --i IDXTATS           idxstats file
-  --s SCAFFOLD_IDS_FILE
-                        File containing scaffold IDs of interest
-  --X-id X_ID           Scaffold ID for X chromosome
-  --Y-id Y_ID           Scaffold ID for Y chromosome
+  -h, --help                        Show this help message and exit
+  --master_file IDXTATS             Path to the master file containing paths to the .idxstats files for each sample
+  --scaffolds SCAFFOLD_IDS_FILE     Path to the scaffolds.txt file containing the scaffolds of interest
+  --metadata METADATA_FILE          Path to the metadata file containing the sample IDs 
+  --heterogametic_id X_ID           The ID of the heterogametic sex chromosome
+  --homogametic_id Y_ID             The ID of the homogametic sex chromosome
+  --system SYSTEM                   The sex determination system (XY or ZW)
+  --output OUTPUT_FILE              Path to the output file
+  --threshold THRESHOLD             The threshold for the sex calling algorithm (default: 0.95)
+  --training_data TRAINING_DATA     If you have a training dataset, you can specify the path to the training data here
 ```
 
 
 ## Input Files
 ### Scaffolds.txt
-Since most assemblies include scaffolds representing other DNA than simply genomic (ex. mitochondrial), it is necessary to define what scaffolds we are interested in using for our analysis. This can be specified with a ```scaffolds.txt`` file. This is a single-column text file where each row is a scaffold ID. Here is an example, 
+Since most assemblies include scaffolds representing other DNA than simply genomic (ex. mitochondrial), it is necessary to define what scaffolds we are interested in using for our analysis. This can be specified with a ```scaffolds.txt``` file. This is a single-column text file where each row is a scaffold ID. Here is an example, 
 ```
 NC_000001.11
 NC_000002.12
@@ -57,7 +60,7 @@ NC_000008.11
 ...
 ``` 
 
-### .idxstats files
+### .idxstats files and master file
 A .idxstats file can easily be created with samtools. If you have a .bam file of interest, fun the following commands to generate the .idxstats file:
 
 ```shell
@@ -67,11 +70,40 @@ samtools index <bam_file>
 ```shell
 samtools idxstats <bam_file> > <prefix>.idxstats
 ```
+To run SCiMS, you will need to create a master file. This file should contain the paths to the .idxstats files for each sample. 
+
+Example of a master file:
+```
+path/to/idxstats/file/sample1.idxstats
+path/to/idxstats/file/sample2.idxstats
+path/to/idxstats/file/sample3.idxstats
+path/to/idxstats/file/sample4.idxstats
+```
+
+### Metadata file
+A metadata file is required to run SCiMS. This file should contain at least one columns, `sample-id`. The `sample-id` column should contain the sample IDs that are present in the .idxstats file. 
+
+Example:
+```
+sample-id	feature
+sample1		A
+sample2		B
+sample3		C
+sample4		D
+
+```
 
 ## Example run
-Example files can be found in the ```test_data`` folder
+Example files can be found in the ```test_data``` folder
 
-```scims --i male.idxstats --s scafoolds.txt --X-id NC_000023.11 --Y-id NC_000024.10```
+```
+scims --scaffolds GRCh38_scaffolds.txt --master_file test_master_file.txt \
+      --metadata metadata_file.txt \
+      --system XY \
+      --homogametic_id NC_000023.11 \
+      --heterogametic_id NC_000024.10 \
+      --output test_output.txt
+```
 
 output:
 ```
@@ -85,10 +117,9 @@ _|        _|          _|    _|_|  _|_|  _|
 _|_|_|      _|_|_|  _|_|_|  _|      _|  _|_|_|    
 
 =================================================
-Rx: 0.599
-95% CI: 0.537 0.66
-Ry: 0.517
-95% CI: 0.464 0.57
+INFO:root:Training data is loaded successfully
+INFO:root:Metadata is loaded successfully
+INFO:root:Results are saved in test_output.txt
 ```
 
 

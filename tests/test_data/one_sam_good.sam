@@ -1,7 +1,0 @@
-@HD	VN:1.0	SO:coordinate
-@SQ	SN:NC_000913.3	LN:4641652
-@PG	ID:bowtie2	PN:bowtie2	VN:2.4.4	CL:"/opt/homebrew/bin/../Cellar/bowtie2/2.4.4_1/bin/bowtie2-align-s --wrapper basic-0 -x GCF_000005845.2_ASM584v2_genomic.fna.gz -1 ERR022075_1.fastq -2 ERR022075_2.fastq"
-@PG	ID:samtools	PN:samtools	PP:bowtie2	VN:1.13	CL:samtools sort
-@PG	ID:samtools.1	PN:samtools	PP:samtools	VN:1.13	CL:samtools view -F 6 -f 1 -b ecoli_alignments.bam
-@PG	ID:samtools.2	PN:samtools	PP:samtools.1	VN:1.15.1	CL:samtools view -Sh example.bam
-ERR022075.6469	81	NC_000913.3	192	42	100M	=	4641440	4641350	GAAACGCATTAGCACCACCATTACCACCACCATCACCATTACCACAGGTAACGGTGCGGGCTGACGCGTACAGGAAACACAGAAAAAAGCCCGCACCTGA	############A2B;:>?;;88@FDGGDGGD<D>GGEDDCHHHHHHHHHHHFHHFHGHHHHHHHHHHHHGGGGGGGGGDHGHHHHGHGHGHHHGGGGBG	AS:i:0	XN:i:0	XM:i:0	XO:i:0	XG:i:0	NM:i:0	MD:Z:100	YS:i:0	YT:Z:DP

@@ -1,0 +1,5 @@
+sample-id	actual_sex
+S28M1000000	male
+S56F150	female
+S79F300	female
+S90M250	male
