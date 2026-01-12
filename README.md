@@ -1,5 +1,7 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+## DEPRECATED
+
 <img src="static/scims_logo.png" align=right width="25%">
 
 <h1>
